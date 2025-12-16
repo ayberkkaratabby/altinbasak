@@ -1,0 +1,20 @@
+{
+  "name": "altinbasakweb",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "dev": "pnpm --parallel -r --filter \"./apps/*\" dev",
+    "dev:web": "pnpm --filter \"./apps/web\" dev",
+    "dev:admin": "pnpm --filter \"./apps/admin\" dev",
+    "build": "pnpm -r --filter \"./apps/*\" build",
+    "build:web": "pnpm --filter \"./apps/web\" build",
+    "build:admin": "pnpm --filter \"./apps/admin\" build",
+    "lint": "pnpm -r --filter \"./apps/*\" lint",
+    "install:all": "pnpm install"
+  },
+  "workspaces": [
+    "apps/*"
+  ]
+}
+

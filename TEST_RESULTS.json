@@ -1,0 +1,85 @@
+{
+  "passed": [],
+  "failed": [
+    {
+      "name": "TC-AUTH-001: Geçerli login",
+      "status": "FAIL",
+      "message": "Status: 0",
+      "timestamp": "2025-12-15T13:15:41.238Z"
+    },
+    {
+      "name": "TC-AUTH-002: Geçersiz kullanıcı adı",
+      "status": "FAIL",
+      "message": "Expected 401, got 0",
+      "timestamp": "2025-12-15T13:15:41.239Z"
+    },
+    {
+      "name": "TC-AUTH-003: Geçersiz şifre",
+      "status": "FAIL",
+      "message": "Expected 401, got 0",
+      "timestamp": "2025-12-15T13:15:41.239Z"
+    },
+    {
+      "name": "TC-AUTH-004: Boş kullanıcı adı/şifre",
+      "status": "FAIL",
+      "message": "Expected 400, got 0",
+      "timestamp": "2025-12-15T13:15:41.239Z"
+    },
+    {
+      "name": "TC-API-001: Login olmadan API erişimi",
+      "status": "FAIL",
+      "message": "Expected 401, got 0",
+      "timestamp": "2025-12-15T13:15:41.239Z"
+    },
+    {
+      "name": "TC-API-002: Geçerli session ile API erişimi",
+      "status": "FAIL",
+      "message": "Expected 200, got 0",
+      "timestamp": "2025-12-15T13:15:41.239Z"
+    },
+    {
+      "name": "TC-API-003: GET /api/admin/pages",
+      "status": "FAIL",
+      "message": "Response is not an array",
+      "timestamp": "2025-12-15T13:15:41.239Z"
+    },
+    {
+      "name": "TC-API-004: POST /api/admin/pages",
+      "status": "FAIL",
+      "message": "",
+      "timestamp": "2025-12-15T13:15:41.239Z"
+    },
+    {
+      "name": "TC-API-007: GET /api/admin/pages/[id] (olmayan ID)",
+      "status": "FAIL",
+      "message": "Expected 404, got 0",
+      "timestamp": "2025-12-15T13:15:41.239Z"
+    },
+    {
+      "name": "TC-API-008: POST /api/admin/pages (eksik veri)",
+      "status": "FAIL",
+      "message": "Expected 400/500, got 0",
+      "timestamp": "2025-12-15T13:15:41.239Z"
+    },
+    {
+      "name": "TC-API-009: GET /api/pages",
+      "status": "FAIL",
+      "message": "Status: 0",
+      "timestamp": "2025-12-15T13:15:41.239Z"
+    },
+    {
+      "name": "TC-API-011: GET /api/pages/[slug] (olmayan slug)",
+      "status": "FAIL",
+      "message": "Expected 404, got 0",
+      "timestamp": "2025-12-15T13:15:41.239Z"
+    }
+  ],
+  "skipped": [
+    {
+      "name": "TC-API-010: GET /api/pages/[slug]",
+      "status": "SKIP",
+      "message": "Could not create test page",
+      "timestamp": "2025-12-15T13:15:41.239Z"
+    }
+  ]
+}

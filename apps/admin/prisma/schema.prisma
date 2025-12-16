@@ -1,0 +1,246 @@
+// This is your Prisma schema file for the Premium Admin Panel Template
+// Add your own models below the admin models
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// AUTHENTICATION & USERS
+// ============================================
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String // hashed with bcrypt
+  name      String
+  role      String   @default("EDITOR") // "ADMIN" | "EDITOR"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+// ============================================
+// MEDIA LIBRARY
+// ============================================
+
+model Media {
+  id          String   @id @default(cuid())
+  url         String
+  filename    String
+  type        String   // "image" | "video"
+  mimeType    String
+  size        Int
+  width       Int?
+  height      Int?
+  duration    Int?     // For videos, in seconds
+  thumbnailUrl String?  // For videos, optional thumbnail
+  alt         String?  // Alt text
+  caption     String?  // Caption
+  tags        String?  // Comma-separated tags
+  folder      String?  // Folder/organization
+  favorite    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("media")
+  @@index([type])
+  @@index([folder])
+}
+
+// ============================================
+// REVISION HISTORY
+// ============================================
+
+model Revision {
+  id        String   @id @default(cuid())
+  userId    String
+  entityType String  // "Page" | "Project" | "BlogPost" | "Service" | "Product" | etc.
+  entityId  String
+  data      String   // snapshot of the entity (JSON stored as string)
+  createdAt DateTime @default(now())
+
+  @@map("revisions")
+  @@index([entityType, entityId, createdAt])
+  @@index([entityType, entityId])
+}
+
+// ============================================
+// GLOBAL SETTINGS
+// ============================================
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   // JSON stored as string
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}
+
+// ============================================
+// CONTENT MANAGEMENT
+// ============================================
+
+model Page {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  status      String   @default("draft") // "published" | "draft" | "archived"
+  featured    Boolean  @default(false)
+  publishedAt DateTime?
+  scheduledAt DateTime?
+  focusKeyword String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  translations PageTranslation[]
+
+  @@map("pages")
+  @@index([slug])
+  @@index([status])
+}
+
+model PageTranslation {
+  id          String   @id @default(cuid())
+  pageId      String
+  locale      String   // "tr" | "en"
+  title       String
+  description String?
+  excerpt     String?
+  content     String?  // Rich text content (JSON or HTML)
+  seoTitle    String?
+  seoDesc     String?
+  canonical   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  page Page @relation(fields: [pageId], references: [id], onDelete: Cascade)
+
+  @@unique([pageId, locale])
+  @@map("page_translations")
+  @@index([pageId])
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  status      String   @default("draft")
+  featured    Boolean  @default(false)
+  publishedAt DateTime?
+  scheduledAt DateTime?
+  focusKeyword String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  translations ProjectTranslation[]
+
+  @@map("projects")
+  @@index([slug])
+  @@index([status])
+}
+
+model ProjectTranslation {
+  id          String   @id @default(cuid())
+  projectId   String
+  locale      String
+  title       String
+  description String?
+  excerpt     String?
+  content     String?
+  seoTitle    String?
+  seoDesc     String?
+  canonical   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, locale])
+  @@map("project_translations")
+  @@index([projectId])
+}
+
+model BlogPost {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  status      String   @default("draft")
+  featured    Boolean  @default(false)
+  publishedAt DateTime?
+  scheduledAt DateTime?
+  focusKeyword String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  translations BlogPostTranslation[]
+
+  @@map("blog_posts")
+  @@index([slug])
+  @@index([status])
+}
+
+model BlogPostTranslation {
+  id          String   @id @default(cuid())
+  blogPostId  String
+  locale      String
+  title       String
+  description String?
+  excerpt     String?
+  content     String?
+  seoTitle    String?
+  seoDesc     String?
+  canonical   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  blogPost BlogPost @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+
+  @@unique([blogPostId, locale])
+  @@map("blog_post_translations")
+  @@index([blogPostId])
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  status      String   @default("draft")
+  featured    Boolean  @default(false)
+  publishedAt DateTime?
+  scheduledAt DateTime?
+  focusKeyword String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  translations ServiceTranslation[]
+
+  @@map("services")
+  @@index([slug])
+  @@index([status])
+}
+
+model ServiceTranslation {
+  id          String   @id @default(cuid())
+  serviceId   String
+  locale      String
+  title       String
+  description String?
+  excerpt     String?
+  content     String?
+  seoTitle    String?
+  seoDesc     String?
+  canonical   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  service Service @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+
+  @@unique([serviceId, locale])
+  @@map("service_translations")
+  @@index([serviceId])
+}
+

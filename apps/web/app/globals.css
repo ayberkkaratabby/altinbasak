@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-display: 'Playfair Display', serif;
+    --font-text: 'Inter', sans-serif;
+    
+    /* Theme Colors - Default values, can be overridden by admin panel */
+    --color-primary: #000000;
+    --color-secondary: #1a1a1a;
+    --color-accent: #D4AF37;
+    --color-background: #ffffff;
+    --color-text: #000000;
+    --color-text-muted: #666666;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-text), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--color-text);
+    background-color: var(--color-background);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display), serif;
+    color: var(--color-text);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Smooth scroll for anchor links */
+  html {
+    scroll-padding-top: 5rem;
+  }
+}

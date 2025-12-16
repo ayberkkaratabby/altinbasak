@@ -1,0 +1,112 @@
+// This is your Prisma schema file for the Premium Admin Panel Template
+// Add your own models below the admin models
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// AUTHENTICATION & USERS
+// ============================================
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String // hashed with bcrypt
+  name      String
+  role      String   @default("EDITOR") // "ADMIN" | "EDITOR"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+// ============================================
+// MEDIA LIBRARY
+// ============================================
+
+model Media {
+  id          String   @id @default(cuid())
+  url         String
+  filename    String
+  type        String   // "image" | "video"
+  mimeType    String
+  size        Int
+  width       Int?
+  height      Int?
+  duration    Int?     // For videos, in seconds
+  thumbnailUrl String?  // For videos, optional thumbnail
+  alt         String?  // Alt text
+  caption     String?  // Caption
+  tags        String?  // Comma-separated tags
+  folder      String?  // Folder/organization
+  favorite    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("media")
+  @@index([type])
+  @@index([folder])
+}
+
+// ============================================
+// REVISION HISTORY
+// ============================================
+
+model Revision {
+  id        String   @id @default(cuid())
+  userId    String
+  entityType String  // "Page" | "Project" | "BlogPost" | "Service" | "Product" | etc.
+  entityId  String
+  data      String   // snapshot of the entity (JSON stored as string)
+  createdAt DateTime @default(now())
+
+  @@map("revisions")
+  @@index([entityType, entityId, createdAt])
+  @@index([entityType, entityId])
+}
+
+// ============================================
+// GLOBAL SETTINGS
+// ============================================
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   // JSON stored as string
+  updatedAt DateTime @updatedAt
+
+  @@map("settings")
+}
+
+// ============================================
+// YOUR CUSTOM MODELS
+// ============================================
+// Add your project-specific models below
+// Examples:
+//
+// model Product {
+//   id        String   @id @default(cuid())
+//   name      String
+//   price     Float
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//
+//   @@map("products")
+// }
+//
+// model Category {
+//   id        String   @id @default(cuid())
+//   name      String
+//   slug      String   @unique
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//
+//   @@map("categories")
+// }
+
