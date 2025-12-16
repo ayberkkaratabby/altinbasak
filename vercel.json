@@ -1,4 +1,5 @@
 {
+  "installCommand": "node -v && npx -y pnpm@9.15.5 -v && npx -y pnpm@9.15.5 install",
   "buildCommand": "pnpm run build",
   "framework": null
 }
