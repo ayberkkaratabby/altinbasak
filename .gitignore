@@ -3,6 +3,12 @@ node_modules/
 .pnp
 .pnp.js
 
+# Lock files (we use pnpm, not npm)
+package-lock.json
+**/package-lock.json
+yarn.lock
+**/yarn.lock
+
 # Testing
 coverage/
 
